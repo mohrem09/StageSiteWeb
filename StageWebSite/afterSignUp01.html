@@ -1,0 +1,158 @@
+<html>
+<head>
+  <title>N'stagie</title>
+  <link rel="stylesheet" href="aftersignUpentreprise.css">
+
+<link rel="icon" type="image/x-icon" href="logo.png">
+<video autoplay muted loop id="myVideo">
+    <source src="vid1.mp4" type="video/mp4">
+  </video>
+  <div id="login-box">
+    <div class="left">
+      <h1 id='status'>Continuez la creation de votre compte</h1>
+      <p >peu d'etapes restants avant la creation de votre compte:</p>
+      <ul>
+        <li><p id="demo">Accedez a votre Mail.</p></li>
+        <li><p id="demo2">Envoyer votre justificatifs .pdf</p></li><br>
+        <li><p id="demo3">votre compte sera creer apres le traitement de votre demande</p></li>
+
+
+        <br><button id="bnttwo" class="social-signin twitter">Commencons!</button>
+
+
+
+
+      </ul>
+      <ul style="display: none;" id="demo4">
+        <li><a href="login.html">Suivant!</a></li> 
+
+      </ul>
+    </div>
+    
+    <div class="right">
+      <img src="logo.png" alt="logo" width="200" height="200">
+      <button id="myBtn" class="social-signin facebook">Confirmer Votre Email!</button>
+
+
+      
+    </div>
+    
+  </div>
+
+  
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+  import { getDatabase, set, ref, update, onValue  } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut , sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+  apiKey: "AIzaSyABLSp0NkCG1tWaUgRxQM80U_frfPF2rmA",
+  authDomain: "n-stagie.firebaseapp.com",
+  projectId: "n-stagie",
+  storageBucket: "n-stagie.appspot.com",
+  messagingSenderId: "1015399882820",
+  appId: "1:1015399882820:web:47d99773fb9590fff49c11"
+};
+
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+  const auth = getAuth();
+  document.getElementById("bnttwo").style.display = "none";
+
+  document.getElementById("myBtn").style.display = "none";
+
+
+  const element = document.getElementById("myBtn");
+  const element2 = document.getElementById("demo");
+  const element3 = document.getElementById("demo2");
+  const element4 = document.getElementById("demo3");
+
+
+
+
+
+  element.addEventListener("click", send_verification);
+//cacher diplom btn et modifier la demande 
+document.getElementById("demo2").innerHTML = "Justificatif recue";
+element3.setAttribute("style", "color:green");
+
+  
+  function send_verification(){
+    sendEmailVerification(auth.currentUser)
+    .then(() => {
+          alert("check your email");
+
+          document.getElementById("demo").innerHTML = "suiver le lien dans votre Mail!";
+     })
+      .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+          alert(errorMessage);
+    // ..
+    });
+
+
+}
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+
+    var uid = user.uid;
+    var email_id = user.email;
+    var email_verified = user.emailVerified;
+    if(email_verified){
+      document.getElementById("demo").innerHTML = "Votre email est verifie";
+      element2.setAttribute("style", "color:green");
+    }else{
+      document.getElementById("myBtn").style.display = "block";
+
+    }
+    const starCountRef = ref(database, 'entreprise/' + uid);
+      onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val(); // data = all data on firebse
+      
+      if(data.test){
+        document.getElementById("demo3").innerHTML = "Votre demande est acceptee";
+        element4.setAttribute("style", "color:green");
+
+      }else{
+        //data.test==false
+      }
+      if((email_verified)&&(data.test)){
+        document.getElementById("bnttwo").style.display = "block";
+ 
+      }
+      
+
+
+
+      console.log(uid);
+    });
+
+
+
+
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
+});
+
+
+bnttwo.addEventListener('click',(e)=>{
+  window.location.href = "publier.html";
+ 
+});
+
+
+
+</script>
+
+

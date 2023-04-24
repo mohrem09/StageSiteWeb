@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>N'sTagiee</title>
+<link rel="stylesheet" href="firstpage.css">
+<link rel="icon" type="image/x-icon" href="logo.png">
+
+<div class="topnav">
+    <a class="active" href="firstPage.html">Acceuil</a>
+    <a href="#contact">Contact</a>
+    <a href="#about">A propos de</a>
+    <a href="entrepriseLogin.html">Je suis Entreprise!</a>
+
+  </div>
+
+<video autoplay muted loop id="myVideo">
+    <source src="vid1.mp4" type="video/mp4">
+  </video>
+
+<h1>N'sTagiee</h1>
+<h2>Plateforme d'etudiants pour trouver des stages dans des entreprises</h2>
+
+
+  <button class="log" id="log_btn" >Login</button>
+  <button class="reg" id="sign_btn">Sign up</button>
+
+
+
+
+
+
+</head>
+<body>
+
+</body>
+
+
+<script>
+
+
+const signbtn = document.getElementById("sign_btn");
+const logbtn  = document.getElementById("log_btn");                                   
+
+
+
+
+signbtn.addEventListener('click',signup);
+ function signup(){
+  window.location.href ="signup.html";
+ }
+ logbtn.addEventListener('click',login);
+ function login(){
+  window.location.href ="login.html";
+ }
+
+
+
+
+
+</script>

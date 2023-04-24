@@ -1,0 +1,121 @@
+<html>
+<head>
+  <title>N'stagie</title>
+  <link rel="stylesheet" href="aftersigngnUp.css">
+
+<link rel="icon" type="image/x-icon" href="logo.png">
+<video autoplay muted loop id="myVideo">
+    <source src="vid1.mp4" type="video/mp4">
+  </video>
+  <div id="login-box">
+    <div class="left">
+      <h1 id='status'>Confirmer votre Email</h1>
+      <p id="demo3">peu d'etapes restants avant la creation de votre compte:</p>
+      <ul>
+        <li><p id="demo">Accedez a votre Mail.</p></li>
+        <li id="demo1"><p >Suiver le lien envoyé par N'stagie</p></li>
+        <li id="demo2"><p id="demo2">Actualiser et continue.</p></li>
+
+
+      </ul>
+      <ul style="display: none;" id="demo4">
+        <li><a href="login.html">Suivant!</a></li> 
+
+      </ul>
+    </div>
+    
+    <div class="right">
+      <img src="logo.png" alt="logo" width="200" height="200">
+      <button id="myBtn" class="social-signin facebook">Confirmer Votre Email!</button>
+
+      
+    </div>
+    
+  </div>
+
+  
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-app.js";
+  import { getDatabase, set, ref, update } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-database.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut , sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-auth.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+  apiKey: "AIzaSyABLSp0NkCG1tWaUgRxQM80U_frfPF2rmA",
+  authDomain: "n-stagie.firebaseapp.com",
+  projectId: "n-stagie",
+  storageBucket: "n-stagie.appspot.com",
+  messagingSenderId: "1015399882820",
+  appId: "1:1015399882820:web:47d99773fb9590fff49c11"
+};
+
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const database = getDatabase(app);
+  const auth = getAuth();
+  const element = document.getElementById("myBtn");
+  const element2 = document.getElementById("demo");
+ 
+
+
+
+  element.addEventListener("click", send_verification);
+
+
+
+  
+  function send_verification(){
+    sendEmailVerification(auth.currentUser)
+    .then(() => {
+          alert("check your email");
+
+          document.getElementById("demo").innerHTML = "suiver le lien dans votre Mail!";
+     })
+      .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+
+          alert(errorMessage);
+    // ..
+    });
+
+
+}
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+
+    const uid = user.uid;
+    var email_id = user.email;
+    var email_verified = user.emailVerified;
+    if(email_verified){
+      document.getElementById("demo").innerHTML = "Votre email est verifie";
+      document.getElementById("myBtn").style.display = "none";
+      document.getElementById("demo1").style.display = "none";
+      document.getElementById("demo2").style.display = "none";
+      document.getElementById("demo3").style.display = "none";
+      document.getElementById("demo4").style.display = "block";
+
+      element2.setAttribute("style", "color:green");
+    }
+      
+
+
+    // ...
+  } else {
+    // User is signed out
+    // ...
+  }
+});
+
+
+
+
+
+
+</script>
+
+
